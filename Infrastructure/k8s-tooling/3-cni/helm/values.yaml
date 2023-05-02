@@ -1,0 +1,20 @@
+# Default values for acg-clients-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+az1: 
+  name: us-east-1a
+  sg1: placeholder
+  sg2: placeholder
+  subnetId: placeholder
+az2: 
+  name: us-east-1b
+  sg1: placeholder
+  sg2: placeholder
+  subnetId: placeholder
+az3: 
+  name: us-east-1c
+  sg1: placeholder
+  sg2: placeholder
+  subnetId: placeholder
+

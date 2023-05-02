@@ -1,0 +1,9 @@
+apiVersion: crd.k8s.amazonaws.com/v1alpha1
+kind: ENIConfig
+metadata: 
+  name: {{ .Values.az2.name }}
+spec: 
+  securityGroups: 
+    - {{ .Values.az2.sg1 }}
+    - {{ .Values.az2.sg1 }}
+  subnet: {{ .Values.az2.subnetId }}
