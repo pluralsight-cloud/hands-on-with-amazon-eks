@@ -10,7 +10,7 @@ vpc_id=`aws cloudformation describe-stack-resources --stack-name ${cluster_stack
 aws ec2 associate-vpc-cidr-block --vpc-id ${vpc_id} --cidr-block ${secondary_cidr}
 sleep 5
 
-nat_gateway_id=`aws ec2 describe-nat-gateways --query "NatGateways[?VpcId=='${vpc_id}'].NatGatewayId" --output text`
+nat_gateway_id=`aws ec2 describe-nat-gateways --query "NatGateways[?VpcId=='${vpc_id}'].NatGatewayId" | jq .[0] | tr -d '"'`
 
 aws cloudformation deploy \
     --stack-name secondary-subnets \
