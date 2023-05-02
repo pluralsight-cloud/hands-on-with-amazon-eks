@@ -1,5 +1,4 @@
 cluster_stack_name="eksctl-eks-acg-cluster"
-region="us-east-2"
 cluster_name="eks-acg"
 secondary_cidr="100.64.0.0/16"
 subnet_a_cidr="100.64.0.0/19"
@@ -16,7 +15,6 @@ aws cloudformation deploy \
     --stack-name secondary-subnets \
     --template-file subnets.json \
     --parameter-overrides \
-        Region=${region} \
         VPCID=${vpc_id} \
         EKSClusterName=${cluster_name} \
         SubnetACidr=${subnet_a_cidr} \

@@ -1,12 +1,7 @@
 {
-"AWSTemplateFormatVersion": "2010-09-09",
+    "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Creates secondary subnets for an existing VPC to be used in a customized CNI withing EKS. NOTE: The VPC should have a secondary CIDR.",
     "Parameters": {
-        "Region": {
-            "Description": "The AWS Region",
-            "Type": "String",
-            "Default": "us-east-2"
-        },
         "VPCID": {
             "Description": "The VPC where the Subnets will be created",
             "Type": "AWS::EC2::VPC::Id"
@@ -40,24 +35,38 @@
         "SubnetA": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
-                "AvailabilityZone": { "Fn::Sub": "${Region}a" },
-                "VpcId": { "Ref": "VPCID" },
-                "CidrBlock": { "Ref": "SubnetACidr" },
+                "AvailabilityZone": {
+                    "Fn::Sub": "${AWS::Region}a"
+                },
+                "VpcId": {
+                    "Ref": "VPCID"
+                },
+                "CidrBlock": {
+                    "Ref": "SubnetACidr"
+                },
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": {"Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateSubnet${Region}A"}
+                        "Value": {
+                            "Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateSubnet${AWS::Region}A"
+                        }
                     },
                     {
                         "Key": "alpha.eksctl.io/cluster-name",
-                        "Value": { "Ref": "EKSClusterName"}
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
                         "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
-                        "Value": { "Ref": "EKSClusterName"}
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
-                        "Key": { "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}" },
+                        "Key": {
+                            "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}"
+                        },
                         "Value": "shared"
                     },
                     {
@@ -70,24 +79,38 @@
         "SubnetB": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
-                "AvailabilityZone": { "Fn::Sub": "${Region}b" },
-                "VpcId": { "Ref": "VPCID" },
-                "CidrBlock": { "Ref": "SubnetBCidr" },
+                "AvailabilityZone": {
+                    "Fn::Sub": "${AWS::Region}b"
+                },
+                "VpcId": {
+                    "Ref": "VPCID"
+                },
+                "CidrBlock": {
+                    "Ref": "SubnetBCidr"
+                },
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": {"Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateSubnet${Region}B"}
+                        "Value": {
+                            "Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateSubnet${AWS::Region}B"
+                        }
                     },
                     {
                         "Key": "alpha.eksctl.io/cluster-name",
-                        "Value": { "Ref": "EKSClusterName"}
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
                         "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
-                        "Value": { "Ref": "EKSClusterName"}
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
-                        "Key": { "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}" },
+                        "Key": {
+                            "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}"
+                        },
                         "Value": "shared"
                     },
                     {
@@ -100,24 +123,38 @@
         "SubnetC": {
             "Type": "AWS::EC2::Subnet",
             "Properties": {
-                "AvailabilityZone": { "Fn::Sub": "${Region}c" },
-                "VpcId": { "Ref": "VPCID" },
-                "CidrBlock": { "Ref": "SubnetCCidr" },
+                "AvailabilityZone": {
+                    "Fn::Sub": "${AWS::Region}c"
+                },
+                "VpcId": {
+                    "Ref": "VPCID"
+                },
+                "CidrBlock": {
+                    "Ref": "SubnetCCidr"
+                },
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": {"Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateSubnet${Region}C"}
+                        "Value": {
+                            "Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateSubnet${AWS::Region}C"
+                        }
                     },
                     {
                         "Key": "alpha.eksctl.io/cluster-name",
-                        "Value": { "Ref": "EKSClusterName"}
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
                         "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
-                        "Value": { "Ref": "EKSClusterName"}
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
-                        "Key": { "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}" },
+                        "Key": {
+                            "Fn::Sub": "kubernetes.io/cluster/${EKSClusterName}"
+                        },
                         "Value": "shared"
                     },
                     {
@@ -127,23 +164,30 @@
                 ]
             }
         },
-
         "RouteTableSubnetA": {
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
-                "VpcId": { "Ref": "VPCID" },
+                "VpcId": {
+                    "Ref": "VPCID"
+                },
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": {"Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateRouteTable${Region}A"}
+                        "Value": {
+                            "Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateRouteTable${AWS::Region}A"
+                        }
                     },
                     {
                         "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
-                        "Value": { "Ref": "EKSClusterName" }
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
                         "Key": "alpha.eksctl.io/cluster-name",
-                        "Value": { "Ref": "EKSClusterName" }
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     }
                 ]
             }
@@ -151,19 +195,27 @@
         "RouteTableSubnetB": {
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
-                "VpcId": { "Ref": "VPCID" },
+                "VpcId": {
+                    "Ref": "VPCID"
+                },
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": {"Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateRouteTable${Region}B"}
+                        "Value": {
+                            "Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateRouteTable${AWS::Region}B"
+                        }
                     },
                     {
                         "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
-                        "Value": { "Ref": "EKSClusterName" }
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
                         "Key": "alpha.eksctl.io/cluster-name",
-                        "Value": { "Ref": "EKSClusterName" }
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     }
                 ]
             }
@@ -171,58 +223,83 @@
         "RouteTableSubnetC": {
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
-                "VpcId": { "Ref": "VPCID" },
+                "VpcId": {
+                    "Ref": "VPCID"
+                },
                 "Tags": [
                     {
                         "Key": "Name",
-                        "Value": {"Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateRouteTable${Region}C"}
+                        "Value": {
+                            "Fn::Sub": "${EKSClusterName}-cluster/SecondaryPrivateRouteTable${AWS::Region}C"
+                        }
                     },
                     {
                         "Key": "eksctl.cluster.k8s.io/v1alpha1/cluster-name",
-                        "Value": { "Ref": "EKSClusterName" }
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     },
                     {
                         "Key": "alpha.eksctl.io/cluster-name",
-                        "Value": { "Ref": "EKSClusterName" }
+                        "Value": {
+                            "Ref": "EKSClusterName"
+                        }
                     }
                 ]
             }
         },
-
         "RouteToNATSubnetA": {
             "Type": "AWS::EC2::Route",
             "Properties": {
-                "RouteTableId": { "Ref": "RouteTableSubnetA"},
+                "RouteTableId": {
+                    "Ref": "RouteTableSubnetA"
+                },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "NatGatewayId": { "Ref": "NATGatewayId" }
+                "NatGatewayId": {
+                    "Ref": "NATGatewayId"
+                }
             }
         },
         "RouteToNATSubnetB": {
             "Type": "AWS::EC2::Route",
             "Properties": {
-                "RouteTableId": { "Ref": "RouteTableSubnetB"},
+                "RouteTableId": {
+                    "Ref": "RouteTableSubnetB"
+                },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "NatGatewayId": { "Ref": "NATGatewayId" }
+                "NatGatewayId": {
+                    "Ref": "NATGatewayId"
+                }
             }
         },
         "RouteToNATSubnetC": {
             "Type": "AWS::EC2::Route",
             "Properties": {
-                "RouteTableId": { "Ref": "RouteTableSubnetC"},
+                "RouteTableId": {
+                    "Ref": "RouteTableSubnetC"
+                },
                 "DestinationCidrBlock": "0.0.0.0/0",
-                "NatGatewayId": { "Ref": "NATGatewayId" }
+                "NatGatewayId": {
+                    "Ref": "NATGatewayId"
+                }
             }
         }
     },
     "Outputs": {
-        "SubnetIdA" : {
-            "Value" : { "Ref": "SubnetA"}
+        "SubnetIdA": {
+            "Value": {
+                "Ref": "SubnetA"
+            }
         },
-        "SubnetIdB" : {
-            "Value" : { "Ref": "SubnetB"}
+        "SubnetIdB": {
+            "Value": {
+                "Ref": "SubnetB"
+            }
         },
-        "SubnetIdC" : {
-            "Value" : { "Ref": "SubnetC"}
+        "SubnetIdC": {
+            "Value": {
+                "Ref": "SubnetC"
+            }
         }
     }
 }
