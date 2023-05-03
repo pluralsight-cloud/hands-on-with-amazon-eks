@@ -3,17 +3,17 @@
 # Declare variables to be passed into your templates.
 
 az1: 
-  name: us-east-1a
+  name: placeholder
   sg1: placeholder
   sg2: placeholder
   subnetId: placeholder
 az2: 
-  name: us-east-1b
+  name: placeholder
   sg1: placeholder
   sg2: placeholder
   subnetId: placeholder
 az3: 
-  name: us-east-1c
+  name: placeholder
   sg1: placeholder
   sg2: placeholder
   subnetId: placeholder
