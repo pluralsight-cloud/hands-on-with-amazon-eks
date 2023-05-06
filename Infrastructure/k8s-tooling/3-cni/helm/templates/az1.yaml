@@ -5,5 +5,5 @@ metadata:
 spec: 
   securityGroups: 
     - {{ .Values.az1.sg1 }}
-    - {{ .Values.az1.sg1 }}
+    - {{ .Values.az1.sg2 }}
   subnet: {{ .Values.az1.subnetId }}
