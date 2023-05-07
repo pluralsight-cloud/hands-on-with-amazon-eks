@@ -1,4 +1,4 @@
-Description: Hosted Zone and ACM Certificate
+Description: ACM Certificate
 Parameters:
   DomainName:
     Description: The base Domain Name

@@ -9,7 +9,7 @@ echo "--- This could take around 10 minutes"
     nodegroup_iam_role=$(aws cloudformation list-exports --query "Exports[?contains(Name, 'nodegroup-eks-node-group::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2)
 
 # Installing Load Balancer Controller
-    ( cd ./Infrastructure/k8s-tooling/2-load-balancer-controller && ./create.sh )
+    ( cd ./Infrastructure/k8s-tooling/load-balancer-controller && ./create.sh )
     aws_lb_controller_policy=$(aws cloudformation describe-stacks --stack-name aws-load-balancer-iam-policy --query "Stacks[*].Outputs[?OutputKey=='IamPolicyArn'].OutputValue" --output text | xargs)
     aws iam attach-role-policy --role-name ${nodegroup_iam_role} --policy-arn ${aws_lb_controller_policy}
 
@@ -17,7 +17,7 @@ echo "--- This could take around 10 minutes"
     ( cd ./Infrastructure/cloudformation/ssl-certificate && ./create.sh )
 
 # Installing ExternalDNS
-    ./Infrastructure/k8s-tooling/1-external-dns/create.sh
+    ./Infrastructure/k8s-tooling/external-dns/create.sh
     aws iam attach-role-policy --role-name ${nodegroup_iam_role} --policy-arn arn:aws:iam::aws:policy/AmazonRoute53FullAccess
 
 #  Create the DynamoDB Tables

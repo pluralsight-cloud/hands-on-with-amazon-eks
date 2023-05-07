@@ -1,0 +1,3 @@
+baseDomain: sample.com
+ssl:
+  enabled: false
