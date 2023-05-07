@@ -1,0 +1,1 @@
+helm upgrade --install sample-app .
