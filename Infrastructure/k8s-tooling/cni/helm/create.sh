@@ -7,17 +7,21 @@ sg2=`aws eks describe-cluster --name eks-acg --query "cluster.resourcesVpcConfig
 
 region='us-east-1'
 
+az1="${region}a"
+az2="${region}b"
+az3="${region}c"
+
 helm upgrade --install \
     --namespace kube-system \
-    --set az1.name=${region}a \
+    --set az1.name=${az1} \
     --set az1.sg1=${sg1} \
     --set az1.sg2=${sg2} \
     --set az1.subnetId=${subnet_a} \
-    --set az2.name=${region}b \
+    --set az2.name=${az2} \
     --set az2.sg1=${sg1} \
     --set az2.sg2=${sg2} \
     --set az2.subnetId=${subnet_b} \
-    --set az3.name=${region}c \
+    --set az3.name=${az3} \
     --set az3.sg1=${sg1} \
     --set az3.sg2=${sg2} \
     --set az3.subnetId=${subnet_c} \
