@@ -4,17 +4,17 @@ metadata:
   name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "acg-resource-api.name" . }}
-    chart: {{ template "acg-resource-api.chart" . }}
+    app: {{ template "acg-renting-api.name" . }}
+    chart: {{ template "acg-renting-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.servicePort }}
+    - port: 80
       targetPort: http
       protocol: TCP
       name: http
   selector:
-    app: {{ template "acg-resource-api.name" . }}
+    app: {{ template "acg-renting-api.name" . }}
     release: {{ .Release.Name }}

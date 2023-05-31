@@ -1,16 +1,7 @@
-namespace=$1
+base_domain=$(aws route53 list-hosted-zones --query "HostedZones[0].Name" --output text | rev | cut -c2- | rev)
 
-if [ -z "${namespace}" ]
-then
-    echo "Missing the 'Namespace' parameter. Taking the default one which is 'development'"
-    namespace="development"
-fi
-
-if [ "${namespace}" == "prod" ]
-then
-    ASPNETCORE_ENVIRONMENT=Production
-else 
-    ASPNETCORE_ENVIRONMENT=Development
-fi
-
-helm upgrade --install --namespace ${namespace} clients-api-${namespace} --set aspnet.environment=${ASPNETCORE_ENVIRONMENT} .
+helm upgrade --install \
+    --namespace development \
+    --create-namespace \
+    --set baseDomain=${base_domain} \
+    clients-api-development .
