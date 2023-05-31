@@ -5,6 +5,7 @@ echo "***************************************************"
 echo "********* CHAPTER 3 - STARTED AT $(date) **********"
 echo "***************************************************"
 
+eksctl utils associate-iam-oidc-provider --cluster=eks-acg
 eksctl utils associate-iam-oidc-provider --cluster=eks-acg --approve
 
 echo "*************************************************************"
