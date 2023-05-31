@@ -17,9 +17,4 @@ nodeGroups:
     privateNetworking: true
     volumeSize: 30
 
-# addons:
-#   - name: vpc-cni 
-#     attachPolicyARNs:
-#       - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
-
 availabilityZones: ["us-east-1a", "us-east-1b", "us-east-1c"] # This is required since in us-east-1 only 2 subnets are created by default (https://eksctl.io/usage/vpc-networking/)
