@@ -8,5 +8,5 @@ eksctl create iamserviceaccount --name ${service_account_name} \
 
 helm upgrade --install external-dns \
     --set serviceAccount.create=false \
-    --serviceAccount.name=${service_account_name} \
+    --set serviceAccount.name=${service_account_name} \
     external-dns/external-dns
