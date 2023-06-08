@@ -52,7 +52,16 @@ echo "***************************************************"
 # Updating IRSA for AWS Load Balancer Controller
     
     helm del -n kube-system aws-load-balancer-controller # Uninstall first
+    aws_load_balancer_iam_policy=$(aws cloudformation describe-stacks --stack aws-load-balancer-iam-policy --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
+    aws iam detach-role-policy --role-name ${nodegroup_iam_role} --policy-arn ${aws_load_balancer_iam_policy}
     ( cd ./Infrastructure/k8s-tooling/load-balancer-controller && ./create-irsa.sh )
+
+# Updating IRSA for External DNS
+    
+    helm del external-dns # Uninstall first
+    external_dns_iam_policy="arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+    aws iam detach-role-policy --role-name ${nodegroup_iam_role} --policy-arn ${external_dns_iam_policy}
+    ( cd ./Infrastructure/k8s-tooling/external-dns && ./create-irsa.sh )
 
 
 echo "*************************************************************"
