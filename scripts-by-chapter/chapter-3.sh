@@ -64,6 +64,12 @@ echo "***************************************************"
     ( cd ./Infrastructure/k8s-tooling/external-dns && ./create-irsa.sh )
 
 
+# Updating IRSA for External DNS
+    vpc_cin_iam_policy="arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+    aws iam detach-role-policy --role-name ${nodegroup_iam_role} --policy-arn ${vpc_cin_iam_policy}
+    ( cd ./Infrastructure/k8s-tooling/cni && ./setup-irsa.sh )
+
+
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 4 - FINISHED AT $(date) *********"
 echo "*************************************************************"
