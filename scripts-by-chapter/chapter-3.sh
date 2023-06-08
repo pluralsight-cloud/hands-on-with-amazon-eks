@@ -49,6 +49,12 @@ echo "***************************************************"
     ( cd ./renting-api/infra/helm-v2 && ./create.sh )
 
 
+# Updating IRSA for AWS Load Balancer Controller
+    
+    helm del -n kube-system aws-load-balancer-controller # Uninstall first
+    ( cd ./Infrastructure/k8s-tooling/load-balancer-controller && ./create-irsa.sh )
+
+
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 4 - FINISHED AT $(date) *********"
 echo "*************************************************************"
