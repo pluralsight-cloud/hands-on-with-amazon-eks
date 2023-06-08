@@ -45,6 +45,9 @@ echo "************************** HERE IS YOUR APP!!! **************************"
 kubectl get ingress -n development front-end-development-ingress | grep bookstore | awk '{print $3}'
 echo "**************************"
 
+# Create the VPC CNI Addon
+
+    aws eks create-addon --addon-name vpc-cni --cluster-name eks-acg
 
 echo "*************************************************************"
 echo "********* READY TO CHAPTER 3! - FINISHED AT $(date) *********"
