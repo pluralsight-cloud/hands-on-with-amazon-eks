@@ -11,7 +11,7 @@ service_account_name="aws-load-balancer-controller-iam-service-account"
 eksctl create iamserviceaccount --name ${service_account_name} \
     --namespace kube-system \
     --cluster eks-acg \
-    --attach-policy-arn ${clients_iam_policy} --approve
+    --attach-policy-arn ${aws_load_balancer_iam_policy} --approve
 
 helm upgrade --install \
   -n kube-system \
