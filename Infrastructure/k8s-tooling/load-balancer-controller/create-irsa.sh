@@ -9,7 +9,7 @@ aws_load_balancer_iam_policy=$(aws cloudformation describe-stacks --stack aws-lo
 service_account_name="aws-load-balancer-controller-iam-service-account"
 
 eksctl create iamserviceaccount --name ${service_account_name} \
-    --namespace development \
+    --namespace kube-system \
     --cluster eks-acg \
     --attach-policy-arn ${clients_iam_policy} --approve
 
