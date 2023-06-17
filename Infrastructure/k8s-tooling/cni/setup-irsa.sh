@@ -1,5 +1,5 @@
-service_account_name="vpc-cni-service-account"
-iam_role_name="aws-node"
+service_account_name="aws-node"
+iam_role_name="vpc-cni-iam-role"
 aws_account_id=$(aws sts get-caller-identity | jq .Account | tr -d '"')
 
 eksctl create iamserviceaccount --name ${service_account_name} \
@@ -10,7 +10,5 @@ eksctl create iamserviceaccount --name ${service_account_name} \
     --override-existing-serviceaccounts \
     --approve
 
-# eksctl update addon \
-#     --name vpc-cni \
-#     --cluster eks-acg \
-#     --service-account-role-arn arn:aws:iam::${aws_account_id}:role/${iam_role_name}
+kubectl delete pods -n kube-system -l k8s-app=aws-node
+# kubectl get pods -n kube-system -l k8s-app=aws-node

@@ -65,10 +65,9 @@ echo "***************************************************"
 
 
 # Updating IRSA for VPC CNI
-    # vpc_cin_iam_policy="arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-    # aws iam detach-role-policy --role-name ${nodegroup_iam_role} --policy-arn ${vpc_cin_iam_policy}
-    # ( cd ./Infrastructure/k8s-tooling/cni && ./setup-irsa.sh )
-    # kubectl delete pods -n kube-system $(k get pods -n kube-system | grep aws-node | awk '{print $1}')
+    vpc_cni_iam_policy="arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+    aws iam detach-role-policy --role-name ${nodegroup_iam_role} --policy-arn ${vpc_cni_iam_policy}
+    ( cd ./Infrastructure/k8s-tooling/cni && ./setup-irsa.sh )
 
 
 echo "*************************************************************"
