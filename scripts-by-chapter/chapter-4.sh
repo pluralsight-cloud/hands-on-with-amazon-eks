@@ -19,6 +19,13 @@ echo "***************************************************"
                 --namespace kube-system \
                 eks/aws-node-termination-handler
 
+    # Create Managed Node Groups
+    ( cd Infrastructure/eksctl/03-managed-nodes && eksctl create nodegroup -f cluster.yaml )
+    eksctl get nodegroups --cluster eks-acg
+
+    # Delete previous nodegroup
+    eksctl delete nodegroup --cluster eks-acg eks-node-group-spot-instances
+
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 5 - FINISHED AT $(date) *********"
 echo "*************************************************************"
