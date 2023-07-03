@@ -19,15 +19,15 @@ echo "***************************************************"
                 --namespace kube-system \
                 eks/aws-node-termination-handler
 
-    # Create Managed Node Groups
-    ( cd Infrastructure/eksctl/03-managed-nodes && eksctl create nodegroup -f cluster.yaml )
-    eksctl get nodegroups --cluster eks-acg
+    # # Create Managed Node Groups
+    # ( cd Infrastructure/eksctl/03-managed-nodes && eksctl create nodegroup -f cluster.yaml )
+    # eksctl get nodegroups --cluster eks-acg
 
-    # Delete previous nodegroup
-    eksctl delete nodegroup --cluster eks-acg eks-node-group-spot-instances
+    # # Delete previous nodegroup
+    # eksctl delete nodegroup --cluster eks-acg eks-node-group-spot-instances
 
-    # Create Fargate Profile
-    eksctl create fargateprofile -f cluster.yaml
+    # # Create Fargate Profile
+    # eksctl create fargateprofile -f cluster.yaml
 
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 5 - FINISHED AT $(date) *********"
