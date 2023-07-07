@@ -4,8 +4,8 @@ metadata:
   name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "acg-front-end.name" . }}
-    chart: {{ template "acg-front-end.chart" . }}
+    app: {{ template "acg-clients-api.name" . }}
+    chart: {{ template "acg-clients-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -16,5 +16,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "acg-front-end.name" . }}
+    app: {{ template "acg-clients-api.name" . }}
     release: {{ .Release.Name }}

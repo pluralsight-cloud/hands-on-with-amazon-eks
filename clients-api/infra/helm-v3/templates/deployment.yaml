@@ -1,41 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "acg-front-end.fullname" . }}
+  name: {{ template "acg-clients-api.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "acg-front-end.name" . }}
-    chart: {{ template "acg-front-end.chart" . }}
+    app: {{ template "acg-clients-api.name" . }}
+    chart: {{ template "acg-clients-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "acg-front-end.name" . }}
+      app: {{ template "acg-clients-api.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "acg-front-end.name" . }}
+        app: {{ template "acg-clients-api.name" . }}
         release: {{ .Release.Name }}
     spec:
-      volumes:
-        - name: {{ template "acg-front-end.fullname" . }}-config-file
-          secret:
-            secretName: {{ template "acg-front-end.fullname" . }}-config-file
+      serviceAccountName: clients-api-iam-service-account
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
-          volumeMounts:
-            - name: {{ template "acg-front-end.fullname" . }}-config-file
-              mountPath: /usr/share/nginx/html/assets/json/config.json
-              subPath: config.json
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: {{ eq .Release.Namespace "development" | ternary "Development" "Production" }}
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.aws.region}}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

@@ -1,29 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "acg-front-end.fullname" . }}
+  name: {{ template "acg-resource-api.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ template "acg-front-end.name" . }}
-    chart: {{ template "acg-front-end.chart" . }}
+    app: {{ template "acg-resource-api.name" . }}
+    chart: {{ template "acg-resource-api.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "acg-front-end.name" . }}
+      app: {{ template "acg-resource-api.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "acg-front-end.name" . }}
+        app: {{ template "acg-resource-api.name" . }}
         release: {{ .Release.Name }}
     spec:
-      volumes:
-        - name: {{ template "acg-front-end.fullname" . }}-config-file
-          secret:
-            secretName: {{ template "acg-front-end.fullname" . }}-config-file
+      serviceAccountName: resources-api-iam-service-account
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -32,10 +29,11 @@ spec:
             - name: http
               containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
-          volumeMounts:
-            - name: {{ template "acg-front-end.fullname" . }}-config-file
-              mountPath: /usr/share/nginx/html/assets/json/config.json
-              subPath: config.json
+          env:
+            - name: DYNAMODB_TABLE 
+              value: {{ .Release.Namespace }}-resources
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.aws.region}}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}

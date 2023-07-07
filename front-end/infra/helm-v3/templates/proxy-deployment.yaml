@@ -24,14 +24,13 @@ spec:
       - name: {{ template "acg-front-end.fullname" . }}-proxy-config
         configMap:
           name: {{ template "acg-front-end.fullname" . }}-proxy-config
-      serviceAccountName: front-end-iam-service-account
       containers:
         - name: {{ .Chart.Name }}-proxy
           image: "nginx"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           volumeMounts:
             - name: {{ template "acg-front-end.fullname" . }}-proxy-config

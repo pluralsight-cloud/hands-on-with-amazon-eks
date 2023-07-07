@@ -4,4 +4,4 @@ helm upgrade --install \
     --namespace development \
     --create-namespace \
     --set baseDomain=${base_domain} \
-    front-end-development .
+    resource-api-development .
