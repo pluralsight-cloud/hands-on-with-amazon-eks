@@ -3,9 +3,9 @@ echo "********* CHAPTER 5 - STARTED AT $(date) **********"
 echo "***************************************************"
 
 # Updating Development
-    helm del -n development `helm ls -n development | grep 'development' | awk '{print $1}'` # Delete them first
+    # helm del -n development `helm ls -n development | grep 'development' | awk '{print $1}'` # Delete them first
 
-    sleep 20
+    # sleep 20
 
     ( cd ./resource-api/infra/helm-v3 && ./create.sh )
     ( cd ./clients-api/infra/helm-v3 && ./create.sh )
