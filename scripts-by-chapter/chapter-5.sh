@@ -46,11 +46,11 @@ echo "***************************************************"
         --attach-policy-arn ${clients_iam_policy} --approve
 
 # Installing the Production applications
-    ( cd ./resource-api/infra/helm-v3 && ./create.sh )
-    ( cd ./clients-api/infra/helm-v3 && ./create.sh )
-    ( cd ./inventory-api/infra/helm-v3 && ./create.sh )
-    ( cd ./renting-api/infra/helm-v3 && ./create.sh )
-    ( cd ./front-end/infra/helm-v3 && ./create.sh )
+    ( cd ./resource-api/infra/helm-v3 && ./create.sh production )
+    ( cd ./clients-api/infra/helm-v3 && ./create.sh production )
+    ( cd ./inventory-api/infra/helm-v3 && ./create.sh production )
+    ( cd ./renting-api/infra/helm-v3 && ./create.sh production )
+    ( cd ./front-end/infra/helm-v3 && ./create.sh production )
 
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 6 - FINISHED AT $(date) *********"
