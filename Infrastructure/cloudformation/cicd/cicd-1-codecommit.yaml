@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: The CICD resources for a specific microservice
+Parameters:
+  AppName:
+    Description: The name of the app
+    Type: String
+Resources:
+  CodeCommitRepository:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryDescription: !Sub 'The ${AppName} repository'
+      RepositoryName: !Sub 'bookstore.${AppName}'
+Outputs:
+  CloneUrlHttp:
+    Value: !GetAtt 'CodeCommitRepository.CloneUrlHttp'

@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: The CICD resources for a specific microservice
+Parameters:
+  AppName:
+    Description: The name of the app
+    Type: String
+  BuildSpecLocation:
+    Description: The location of the buildspec file inside the repository
+    Type: String
+    Default: infra/codebuild/buildspec.yml
+  CICDBranch:
+    Description: The branch that will be used for the CICD process
+    Type: String
+    Default: master
+Resources:
+  CodeCommitRepository:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryDescription: !Sub 'The ${AppName} repository'
+      RepositoryName: !Sub 'bookstore.${AppName}'
+  EcrRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: !Sub 'bookstore.${AppName}'
+  IamServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts:AssumeRole
+  IamServiceRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource:
+              - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/bookstore-${AppName}'
+              - !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/bookstore-${AppName}:*'
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+          - Effect: Allow
+            Action: ecr:*
+            Resource: '*'
+          - Effect: Allow
+            Resource:
+              - !GetAtt 'CodeCommitRepository.Arn'
+            Action:
+              - codecommit:GitPull
+          - Effect: Allow
+            Action:
+              - codebuild:CreateReportGroup
+              - codebuild:CreateReport
+              - codebuild:UpdateReport
+              - codebuild:BatchPutTestCases
+            Resource:
+              - !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/bookstore-${AppName}-*'
+      PolicyName: !Sub 'code-build-policy-${AppName}'
+      Roles:
+        - !Ref 'IamServiceRole'
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Artifacts:
+        Type: NO_ARTIFACTS
+      BadgeEnabled: false
+      Description: !Sub 'CodeBuild project for the App ${AppName}'
+      Environment:
+        Type: LINUX_CONTAINER
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+        ComputeType: BUILD_GENERAL1_SMALL
+        EnvironmentVariables: []
+        PrivilegedMode: true
+        ImagePullCredentialsType: CODEBUILD
+      Name: !Sub 'bookstore-${AppName}'
+      QueuedTimeoutInMinutes: 480
+      ServiceRole: !Ref 'IamServiceRole'
+      Source:
+        Type: CODECOMMIT
+        Location: !GetAtt 'CodeCommitRepository.CloneUrlHttp'
+        BuildSpec: !Ref 'BuildSpecLocation'
+      SourceVersion: !Sub 'refs/heads/${CICDBranch}'
+      TimeoutInMinutes: 60
+Outputs:
+  CloneUrlHttp:
+    Value: !GetAtt 'CodeCommitRepository.CloneUrlHttp'
