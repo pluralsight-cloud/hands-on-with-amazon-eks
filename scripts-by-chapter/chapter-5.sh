@@ -39,6 +39,60 @@ echo "***************************************************"
     codecommit_username=`echo $codecommit_creds | jq -r ".ServiceSpecificCredential.ServiceUserName" | xargs`
     codecommit_password=`echo $codecommit_creds | jq -r ".ServiceSpecificCredential.ServicePassword" | xargs`
 
+# Get the Repositories' URLs
+    inventory_api_repo_url=$(aws cloudformation describe-stacks --stack inventory-api-codecommit-repo --query "Stacks[*].Outputs[?OutputKey=='CloneUrlHttp'].OutputValue" --output text | xargs)
+    resource_api_repo_url=$(aws cloudformation describe-stacks --stack resource-api-codecommit-repo --query "Stacks[*].Outputs[?OutputKey=='CloneUrlHttp'].OutputValue" --output text | xargs)
+    renting_api_repo_url=$(aws cloudformation describe-stacks --stack renting-api-codecommit-repo --query "Stacks[*].Outputs[?OutputKey=='CloneUrlHttp'].OutputValue" --output text | xargs)
+    clients_api_repo_url=$(aws cloudformation describe-stacks --stack clients-api-codecommit-repo --query "Stacks[*].Outputs[?OutputKey=='CloneUrlHttp'].OutputValue" --output text | xargs)
+    front_end_repo_url=$(aws cloudformation describe-stacks --stack front-end-codecommit-repo --query "Stacks[*].Outputs[?OutputKey=='CloneUrlHttp'].OutputValue" --output text | xargs)
+
+# Init Git config
+    git config --global user.email "cloud-user@eks-acg.com"
+    git config --global user.name "$codecommit_username"
+    git config --global user.password "$codecommit_password"
+
+    base_codecommit_url=$(echo $inventory_api_repo_url | grep -Eo '^https?://[^/]+' | xargs)
+    codecommit_username_encoded=$(echo -n ${codecommit_username} | jq -sRr @uri)
+    codecommit_password_encoded=$(echo -n ${codecommit_password} | jq -sRr @uri)
+
+    echo ${base_codecommit_url/"https://"/"https://${codecommit_username_encoded}:${codecommit_password_encoded}@"} >> ~/.git-credentials
+    
+
+# Initial Push to the Git Repositories
+    ( cd ./inventory-api && \
+        git init && \
+        git remote add origin ${inventory_api_repo_url} && \
+        git add . && \
+        git commit -m "Initial Commit" &&
+        git push origin master )
+    
+    ( cd ./renting-api && \
+        git init && \
+        git remote add origin ${renting_api_repo_url} && \
+        git add . && \
+        git commit -m "Initial Commit" &&
+        git push origin master )
+    
+    ( cd ./resource-api && \
+        git init && \
+        git remote add origin ${resource_api_repo_url} && \
+        git add . && \
+        git commit -m "Initial Commit" &&
+        git push origin master )
+    
+    ( cd ./clients-api && \
+        git init && \
+        git remote add origin ${clients_api_repo_url} && \
+        git add . && \
+        git commit -m "Initial Commit" &&
+        git push origin master )
+    
+    ( cd ./front-end && \
+        git init && \
+        git remote add origin ${front_end_repo_url} && \
+        git add . && \
+        git commit -m "Initial Commit" &&
+        git push origin master )
 
 
 
