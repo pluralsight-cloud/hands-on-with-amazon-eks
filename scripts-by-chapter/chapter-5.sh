@@ -2,6 +2,46 @@ echo "***************************************************"
 echo "********* CHAPTER 5 - STARTED AT $(date) **********"
 echo "***************************************************"
 
+# Create the CodeCommit Repository for each app
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name inventory-api-codecommit-repo \
+            --template-file cicd-1-codecommit.yaml \
+            --parameter-overrides \
+                AppName=inventory-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name resource-api-codecommit-repo \
+            --template-file cicd-1-codecommit.yaml \
+            --parameter-overrides \
+                AppName=resource-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name renting-api-codecommit-repo \
+            --template-file cicd-1-codecommit.yaml \
+            --parameter-overrides \
+                AppName=renting-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name clients-api-codecommit-repo \
+            --template-file cicd-1-codecommit.yaml \
+            --parameter-overrides \
+                AppName=clients-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name front-end-codecommit-repo \
+            --template-file cicd-1-codecommit.yaml \
+            --parameter-overrides \
+                AppName=front-end )
+
+# Get the CodeCommit credentials for the "cloud_user" IAM user
+    codecommit_creds=$(aws iam create-service-specific-credential --user-name cloud_user --service-name codecommit.amazonaws.com)
+    codecommit_username=`echo $codecommit_creds | jq -r ".ServiceSpecificCredential.ServiceUserName" | xargs`
+    codecommit_password=`echo $codecommit_creds | jq -r ".ServiceSpecificCredential.ServicePassword" | xargs`
+
+
+
+
 # Updating Development
     ( cd ./resource-api/infra/helm-v3 && ./create.sh )
     ( cd ./clients-api/infra/helm-v3 && ./create.sh )
