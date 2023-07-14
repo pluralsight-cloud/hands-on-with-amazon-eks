@@ -4,6 +4,7 @@
 echo "***************************************************"
 echo "********* CHAPTER 3 - STARTED AT $(date) **********"
 echo "***************************************************"
+echo "--- This could take around 10 minutes"
 
 # Create OIDC Provider and connect it with EKS
     eksctl utils associate-iam-oidc-provider --cluster=eks-acg --approve

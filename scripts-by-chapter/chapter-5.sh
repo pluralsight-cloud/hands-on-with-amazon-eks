@@ -1,6 +1,7 @@
 echo "***************************************************"
 echo "********* CHAPTER 5 - STARTED AT $(date) **********"
 echo "***************************************************"
+echo "--- This could take around 20 minutes"
 
 # Create the CodeCommit Repository for each app
     ( cd Infrastructure/cloudformation/cicd && \
@@ -94,6 +95,44 @@ echo "***************************************************"
         git commit -m "Initial Commit" &&
         git push origin master )
 
+# Install ECR and CodeBuild jobs
+
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name inventory-api-codecommit-repo \
+            --template-file cicd-2-ecr-and-build.yaml \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides \
+                AppName=inventory-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name resource-api-codecommit-repo \
+            --template-file cicd-2-ecr-and-build.yaml \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides \
+                AppName=resource-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name renting-api-codecommit-repo \
+            --template-file cicd-2-ecr-and-build.yaml \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides \
+                AppName=renting-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name clients-api-codecommit-repo \
+            --template-file cicd-2-ecr-and-build.yaml \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides \
+                AppName=clients-api )
+    ( cd Infrastructure/cloudformation/cicd && \
+        aws cloudformation deploy \
+            --stack-name front-end-codecommit-repo \
+            --template-file cicd-2-ecr-and-build.yaml \
+            --capabilities CAPABILITY_IAM \
+            --parameter-overrides \
+                AppName=front-end )
+        
 
 
 # Updating Development
