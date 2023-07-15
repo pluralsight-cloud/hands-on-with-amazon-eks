@@ -1,4 +1,5 @@
-FROM ruby:2.6.3
+# FROM ruby:2.6.3
+FROM public.ecr.aws/docker/library/ruby:2.6.6
 
 # RUN bundle config --delete frozen
 # RUN bundle config --global frozen 1
