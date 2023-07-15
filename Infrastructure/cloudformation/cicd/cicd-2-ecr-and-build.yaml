@@ -78,7 +78,7 @@ Resources:
         ComputeType: BUILD_GENERAL1_SMALL
         EnvironmentVariables: 
           - Name: ECR_URL
-            Value: !Ref EcrRepository.RepositoryUri
+            Value: !GetAtt EcrRepository.RepositoryUri
         PrivilegedMode: true
         ImagePullCredentialsType: CODEBUILD
       Name: !Sub 'bookstore-${AppName}'

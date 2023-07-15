@@ -142,43 +142,43 @@ echo "--- This could take around 20 minutes"
             --parameter-overrides \
                 AppName=front-end )
         
-# Automatic Building
+# # Automatic Building
 
-    ( cd Infrastructure/cloudformation/cicd && \
-        aws cloudformation deploy \
-            --stack-name inventory-api-codecommit-repo \
-            --template-file cicd-automatic-build.yaml \
-            --capabilities CAPABILITY_IAM \
-            --parameter-overrides \
-                AppName=inventory-api )
-    ( cd Infrastructure/cloudformation/cicd && \
-        aws cloudformation deploy \
-            --stack-name resource-api-codecommit-repo \
-            --template-file cicd-automatic-build.yaml \
-            --capabilities CAPABILITY_IAM \
-            --parameter-overrides \
-                AppName=resource-api )
-    ( cd Infrastructure/cloudformation/cicd && \
-        aws cloudformation deploy \
-            --stack-name renting-api-codecommit-repo \
-            --template-file cicd-automatic-build.yaml \
-            --capabilities CAPABILITY_IAM \
-            --parameter-overrides \
-                AppName=renting-api )
-    ( cd Infrastructure/cloudformation/cicd && \
-        aws cloudformation deploy \
-            --stack-name clients-api-codecommit-repo \
-            --template-file cicd-automatic-build.yaml \
-            --capabilities CAPABILITY_IAM \
-            --parameter-overrides \
-                AppName=clients-api )
-    ( cd Infrastructure/cloudformation/cicd && \
-        aws cloudformation deploy \
-            --stack-name front-end-codecommit-repo \
-            --template-file cicd-automatic-build.yaml \
-            --capabilities CAPABILITY_IAM \
-            --parameter-overrides \
-                AppName=front-end )
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name inventory-api-codecommit-repo \
+#             --template-file cicd-automatic-build.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=inventory-api )
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name resource-api-codecommit-repo \
+#             --template-file cicd-automatic-build.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=resource-api )
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name renting-api-codecommit-repo \
+#             --template-file cicd-automatic-build.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=renting-api )
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name clients-api-codecommit-repo \
+#             --template-file cicd-automatic-build.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=clients-api )
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name front-end-codecommit-repo \
+#             --template-file cicd-automatic-build.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=front-end )
 
 # Updating Development
 #     ( cd ./resource-api/infra/helm-v3 && ./create.sh )
