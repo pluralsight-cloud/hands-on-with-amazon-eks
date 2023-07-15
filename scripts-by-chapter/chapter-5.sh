@@ -1,3 +1,8 @@
+./scripts-by-chapter/chapter-1.sh
+./scripts-by-chapter/chapter-2.sh
+./scripts-by-chapter/chapter-3.sh
+./scripts-by-chapter/chapter-4.sh
+
 echo "***************************************************"
 echo "********* CHAPTER 5 - STARTED AT $(date) **********"
 echo "***************************************************"
@@ -48,9 +53,13 @@ echo "--- This could take around 20 minutes"
     front_end_repo_url=$(aws cloudformation describe-stacks --stack front-end-codecommit-repo --query "Stacks[*].Outputs[?OutputKey=='CloneUrlHttp'].OutputValue" --output text | xargs)
 
 # Init Git config
+    git config --global credential.helper store
+    git config --global init.defaultBranch master
     git config --global user.email "cloud-user@eks-acg.com"
     git config --global user.name "$codecommit_username"
     git config --global user.password "$codecommit_password"
+
+    
 
     base_codecommit_url=$(echo $inventory_api_repo_url | grep -Eo '^https?://[^/]+' | xargs)
     codecommit_username_encoded=$(echo -n ${codecommit_username} | jq -sRr @uri)
