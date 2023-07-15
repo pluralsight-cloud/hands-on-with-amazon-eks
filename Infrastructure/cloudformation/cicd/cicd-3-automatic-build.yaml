@@ -89,7 +89,9 @@ Resources:
         Type: LINUX_CONTAINER
         Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
         ComputeType: BUILD_GENERAL1_SMALL
-        EnvironmentVariables: []
+        EnvironmentVariables: 
+          - Name: ECR_URL
+            Value: !GetAtt EcrRepository.RepositoryUri
         PrivilegedMode: true
         ImagePullCredentialsType: CODEBUILD
       Name: !Sub 'bookstore-${AppName}'
