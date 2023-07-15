@@ -3,7 +3,6 @@ version: 0.2
 env:
   variables:
     APP: renting-api
-    ECR_URL: ${CODEBUILD_WEBHOOK_ACTOR_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
     ECR_REPO_NAME: bookstore.renting-api
 
 phases:
