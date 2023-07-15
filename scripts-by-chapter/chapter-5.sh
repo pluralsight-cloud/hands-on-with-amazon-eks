@@ -56,8 +56,7 @@ echo "--- This could take around 20 minutes"
     git config --global credential.helper store
     git config --global init.defaultBranch master
     git config --global user.email "cloud-user@eks-acg.com"
-    git config --global user.name "$codecommit_username"
-    git config --global user.password "$codecommit_password"
+    git config --global user.name "cloud_user"
 
     
 
