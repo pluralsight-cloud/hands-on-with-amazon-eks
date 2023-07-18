@@ -2,8 +2,6 @@ version: 0.2
 
 env:
   variables:
-    HELM_RELEASE_NAME: resource-api-development
-    NAMESPACE: development
     EKS_CLUSTER_NAME: eks-acg
 
 phases:    
@@ -20,16 +18,16 @@ phases:
       - ./get_helm.sh
   pre_build:  
     commands:
-      - source `pwd`/version
-      - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
-      - TAG=`echo "${MAJOR}.${MINOR}.${COMMIT_ID_SHORT}"`
-      - echo ${TAG}
       - aws eks --region ${AWS_DEFAULT_REGION} update-kubeconfig --name ${EKS_CLUSTER_NAME}
       - kubectl get nodes
   build: 
     commands:
-      - cd infra/helm-v2
-      - helm upgrade --install --namespace ${NAMESPACE} ${HELM_RELEASE_NAME} -f values.yaml -f values.${NAMESPACE}.yaml --set image.tag=${TAG} .
+      - source `pwd`/version
+      - COMMIT_ID_SHORT=`echo "${CODEBUILD_RESOLVED_SOURCE_VERSION}" | cut -c1-8`
+      - TAG=`echo "${MAJOR}.${MINOR}.${COMMIT_ID_SHORT}"`
+      - echo ${TAG}
+      - cd infra/helm-v4
+      - ./create.sh ${NAMESPACE} ${TAG}
   post_build: 
     commands:
       - echo Done
