@@ -1,5 +1,5 @@
 environment=${1}
-tag=${2:"latest"}
+tag=${2:="latest"}
 
 if [ -z "$environment" ]; then
     echo "No environment specified. Using 'development'"
