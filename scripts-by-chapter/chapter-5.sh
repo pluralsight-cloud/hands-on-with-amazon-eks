@@ -74,35 +74,35 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
         git init && \
         git remote add origin ${inventory_api_repo_url} && \
         git add . && \
-        git commit -m "Initial Commit" &&
+        git commit -m "Initial Commit" && \
         git push origin master )
     
     ( cd ./renting-api && \
         git init && \
         git remote add origin ${renting_api_repo_url} && \
         git add . && \
-        git commit -m "Initial Commit" &&
+        git commit -m "Initial Commit" && \
         git push origin master )
     
     ( cd ./resource-api && \
         git init && \
         git remote add origin ${resource_api_repo_url} && \
         git add . && \
-        git commit -m "Initial Commit" &&
+        git commit -m "Initial Commit" && \
         git push origin master )
     
     ( cd ./clients-api && \
         git init && \
         git remote add origin ${clients_api_repo_url} && \
         git add . && \
-        git commit -m "Initial Commit" &&
+        git commit -m "Initial Commit" && \
         git push origin master )
     
     ( cd ./front-end && \
         git init && \
         git remote add origin ${front_end_repo_url} && \
         git add . && \
-        git commit -m "Initial Commit" &&
+        git commit -m "Initial Commit" && \
         git push origin master )
 
 # Install ECR and CodeBuild jobs
