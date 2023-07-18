@@ -14,5 +14,5 @@ helm upgrade --install \
     --create-namespace \
     --set baseDomain=${base_domain} \
     --set aws.region=${region} \
-    --set aws.accountId=${account_id}
+    --set aws.accountId=${account_id} \
     inventory-api-${environment} .
