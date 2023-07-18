@@ -2,8 +2,6 @@ version: 0.2
 
 env:
   variables:
-    HELM_RELEASE_NAME: inventory-api-development
-    # NAMESPACE: development
     EKS_CLUSTER_NAME: eks-acg
 
 phases:    
