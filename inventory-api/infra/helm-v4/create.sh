@@ -1,4 +1,5 @@
 environment=${1}
+tag=${2:"latest"}
 
 if [ -z "$environment" ]; then
     echo "No environment specified. Using 'development'"
@@ -15,4 +16,5 @@ helm upgrade --install \
     --set baseDomain=${base_domain} \
     --set aws.region=${region} \
     --set aws.accountId=${account_id} \
+    --set image.tag=${tag} \
     inventory-api-${environment} .

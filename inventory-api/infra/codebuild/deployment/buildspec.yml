@@ -3,7 +3,7 @@ version: 0.2
 env:
   variables:
     HELM_RELEASE_NAME: inventory-api-development
-    NAMESPACE: development
+    # NAMESPACE: development
     EKS_CLUSTER_NAME: eks-acg
 
 phases:    
@@ -29,7 +29,7 @@ phases:
   build: 
     commands:
       - cd infra/helm-v4
-      - ./create.sh ${NAMESPACE}
+      - ./create.sh ${NAMESPACE} ${TAG}
   post_build: 
     commands:
       - echo Done
