@@ -1,4 +1,4 @@
-# Default values for acg-renting-api.
+# Default values for acg-resource-api.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
@@ -7,15 +7,15 @@ baseDomain: sample.com
 
 image:
   repository: 
-    name: bookstore.renting-api
+    name: bookstore.resource-api
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 service:
   type: NodePort
-  containerPort: 5004
+  containerPort: 5000
   servicePort: 80
-  name: renting-api-service
+  name: resource-api-service
   scheme: internet-facing
 
 aws:
