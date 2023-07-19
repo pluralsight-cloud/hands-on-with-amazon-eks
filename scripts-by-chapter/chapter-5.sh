@@ -248,11 +248,11 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
     wait
 
 # Updating Development
-#     ( cd ./resource-api/infra/helm-v3 && ./create.sh )
-#     ( cd ./clients-api/infra/helm-v3 && ./create.sh )
-#     ( cd ./inventory-api/infra/helm-v3 && ./create.sh )
-#     ( cd ./renting-api/infra/helm-v3 && ./create.sh )
-#     ( cd ./front-end/infra/helm-v3 && ./create.sh )
+#     ( cd ./resource-api/infra/helm-v4 && ./create.sh )
+#     ( cd ./clients-api/infra/helm-v4 && ./create.sh )
+#     ( cd ./inventory-api/infra/helm-v4 && ./create.sh )
+#     ( cd ./renting-api/infra/helm-v4 && ./create.sh )
+#     ( cd ./front-end/infra/helm-v4 && ./create.sh )
 
 
 # #  Create the Production DynamoDB Tables
