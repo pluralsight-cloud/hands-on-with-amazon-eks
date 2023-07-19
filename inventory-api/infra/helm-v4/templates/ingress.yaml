@@ -16,7 +16,8 @@ metadata:
     alb.ingress.kubernetes.io/group.name: {{ .Release.Namespace }}
 spec:
   rules:
-    - host: {{ eq .Release.Namespace "development" | ternary "inventory-api-development" "inventory-api" }}.{{ .Values.baseDomain }}
+    # - host: {{ eq .Release.Namespace "development" | ternary "inventory-api-development" "inventory-api" }}.{{ .Values.baseDomain }}
+    - host: "inventory-api.{{ .Values.baseDomain }}"
       http:
         paths:
           - path: "/*"
