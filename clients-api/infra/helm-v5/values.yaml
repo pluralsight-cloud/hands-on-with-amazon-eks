@@ -1,0 +1,37 @@
+# Default values for acg-clients-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+baseDomain: sample.com
+
+aws:
+  region: us-east-1
+  accountId: 12345678909
+
+image:
+  repository: 
+    name: bookstore.clients-api
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  containerPort: 5003
+  servicePort: 80
+  name: clients-api-service
+  scheme: internet-facing
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
