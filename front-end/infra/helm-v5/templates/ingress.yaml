@@ -1,9 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-api-ingress
+  name: {{ .Release.Name }}-ingress
   labels:
-    app: {{ .Release.Name }}-api
+    app: {{ .Release.Name }}
     chart: {{ .Chart.Name }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -16,7 +16,7 @@ metadata:
     alb.ingress.kubernetes.io/group.name: {{ .Release.Namespace }}
 spec:
   rules:
-    - host: "api.{{ .Values.baseDomain }}"
+    - host: {{ eq .Release.Namespace "development" | ternary "bookstore-development" "bookstore" }}.{{ .Values.baseDomain }}
       http:
         paths:
           - path: "/*"
@@ -30,6 +30,6 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service: 
-                name: {{ .Values.service.name }}-proxy
+                name: {{ .Values.service.name }}
                 port:
                   number:  {{ .Values.service.servicePort }}

@@ -16,7 +16,7 @@ metadata:
     alb.ingress.kubernetes.io/group.name: {{ .Release.Namespace }}
 spec:
   rules:
-    - host: {{ eq .Release.Namespace "development" | ternary "bookstore-development" "bookstore" }}.{{ .Values.baseDomain }}
+    - host: "bookstore.{{ .Values.baseDomain }}"
       http:
         paths:
           - path: "/*"
