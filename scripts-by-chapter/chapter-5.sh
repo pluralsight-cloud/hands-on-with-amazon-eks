@@ -16,31 +16,33 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
             --stack-name inventory-api-codecommit-repo \
             --template-file cicd-1-codecommit.yaml \
             --parameter-overrides \
-                AppName=inventory-api )
+                AppName=inventory-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name resource-api-codecommit-repo \
             --template-file cicd-1-codecommit.yaml \
             --parameter-overrides \
-                AppName=resource-api )
+                AppName=resource-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name renting-api-codecommit-repo \
             --template-file cicd-1-codecommit.yaml \
             --parameter-overrides \
-                AppName=renting-api )
+                AppName=renting-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name clients-api-codecommit-repo \
             --template-file cicd-1-codecommit.yaml \
             --parameter-overrides \
-                AppName=clients-api )
+                AppName=clients-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name front-end-codecommit-repo \
             --template-file cicd-1-codecommit.yaml \
             --parameter-overrides \
-                AppName=front-end )
+                AppName=front-end ) &
+
+    wait
 
 # Get the CodeCommit credentials for the "cloud_user" IAM user
     codecommit_creds=$(aws iam create-service-specific-credential --user-name cloud_user --service-name codecommit.amazonaws.com)
@@ -75,35 +77,33 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
         git remote add origin ${inventory_api_repo_url} && \
         git add . && \
         git commit -m "Initial Commit" && \
-        git push origin master )
-    
+        git push origin master ) & \
     ( cd ./renting-api && \
         git init && \
         git remote add origin ${renting_api_repo_url} && \
         git add . && \
         git commit -m "Initial Commit" && \
-        git push origin master )
-    
+        git push origin master ) & \
     ( cd ./resource-api && \
         git init && \
         git remote add origin ${resource_api_repo_url} && \
         git add . && \
         git commit -m "Initial Commit" && \
-        git push origin master )
-    
+        git push origin master ) & \
     ( cd ./clients-api && \
         git init && \
         git remote add origin ${clients_api_repo_url} && \
         git add . && \
         git commit -m "Initial Commit" && \
-        git push origin master )
-    
+        git push origin master ) & \
     ( cd ./front-end && \
         git init && \
         git remote add origin ${front_end_repo_url} && \
         git add . && \
         git commit -m "Initial Commit" && \
-        git push origin master )
+        git push origin master ) &
+
+    wait
 
 # Install ECR and CodeBuild jobs
 
@@ -113,35 +113,37 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
             --template-file cicd-2-ecr-and-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=inventory-api )
+                AppName=inventory-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name resource-api-codecommit-repo \
             --template-file cicd-2-ecr-and-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=resource-api )
+                AppName=resource-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name renting-api-codecommit-repo \
             --template-file cicd-2-ecr-and-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=renting-api )
+                AppName=renting-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name clients-api-codecommit-repo \
             --template-file cicd-2-ecr-and-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=clients-api )
+                AppName=clients-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name front-end-codecommit-repo \
             --template-file cicd-2-ecr-and-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=front-end )
+                AppName=front-end ) &
+
+    wait
         
 # # Automatic Building
 
@@ -151,35 +153,36 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
             --template-file cicd-3-automatic-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=inventory-api )
+                AppName=inventory-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name resource-api-codecommit-repo \
             --template-file cicd-3-automatic-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=resource-api )
+                AppName=resource-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name renting-api-codecommit-repo \
             --template-file cicd-3-automatic-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=renting-api )
+                AppName=renting-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name clients-api-codecommit-repo \
             --template-file cicd-3-automatic-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=clients-api )
+                AppName=clients-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name front-end-codecommit-repo \
             --template-file cicd-3-automatic-build.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=front-end )
+                AppName=front-end ) &
+    wait
 
 # Add the IAM Role to the aws-auth Config Map
     inventory_api_codebuild_iam_role_name=$(aws cloudformation describe-stack-resources --stack inventory-api-codecommit-repo --query "StackResources[?LogicalResourceId=='IamServiceRole'].PhysicalResourceId" --output text | xargs)
@@ -212,35 +215,37 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
             --template-file cicd-4-deploy-development.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=inventory-api )
+                AppName=inventory-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name resource-api-codecommit-repo \
             --template-file cicd-4-deploy-development.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=resource-api )
+                AppName=resource-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name renting-api-codecommit-repo \
             --template-file cicd-4-deploy-development.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=renting-api )
+                AppName=renting-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name clients-api-codecommit-repo \
             --template-file cicd-4-deploy-development.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=clients-api )
+                AppName=clients-api ) & \
     ( cd Infrastructure/cloudformation/cicd && \
         aws cloudformation deploy \
             --stack-name front-end-codecommit-repo \
             --template-file cicd-4-deploy-development.yaml \
             --capabilities CAPABILITY_IAM \
             --parameter-overrides \
-                AppName=front-end )
+                AppName=front-end ) &
+
+    wait
 
 # Updating Development
 #     ( cd ./resource-api/infra/helm-v3 && ./create.sh )

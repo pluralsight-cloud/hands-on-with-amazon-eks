@@ -10,10 +10,12 @@ echo "--- This could take around 10 minutes"
     eksctl utils associate-iam-oidc-provider --cluster=eks-acg --approve
 
 # Create IAM Policies of Bookstore Microservices
-    ( cd clients-api/infra/cloudformation && ./create-iam-policy.sh )
-    ( cd resource-api/infra/cloudformation && ./create-iam-policy.sh )
-    ( cd inventory-api/infra/cloudformation && ./create-iam-policy.sh )
-    ( cd renting-api/infra/cloudformation && ./create-iam-policy.sh )
+    ( cd clients-api/infra/cloudformation && ./create-iam-policy.sh ) & \
+    ( cd resource-api/infra/cloudformation && ./create-iam-policy.sh ) & \
+    ( cd inventory-api/infra/cloudformation && ./create-iam-policy.sh ) & \
+    ( cd renting-api/infra/cloudformation && ./create-iam-policy.sh ) &
+
+    wait
 
 # Getting NodeGroup IAM Role from Kubernetes Cluster
     nodegroup_iam_role=$(aws cloudformation list-exports --query "Exports[?contains(Name, 'nodegroup-eks-node-group::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2)
@@ -29,25 +31,29 @@ echo "--- This could take around 10 minutes"
     eksctl create iamserviceaccount --name resources-api-iam-service-account \
         --namespace development \
         --cluster eks-acg \
-        --attach-policy-arn ${resource_iam_policy} --approve
+        --attach-policy-arn ${resource_iam_policy} --approve & \
     eksctl create iamserviceaccount --name renting-api-iam-service-account \
         --namespace development \
         --cluster eks-acg \
-        --attach-policy-arn ${renting_iam_policy} --approve
+        --attach-policy-arn ${renting_iam_policy} --approve & \
     eksctl create iamserviceaccount --name inventory-api-iam-service-account \
         --namespace development \
         --cluster eks-acg \
-        --attach-policy-arn ${inventory_iam_policy} --approve
+        --attach-policy-arn ${inventory_iam_policy} --approve & \
     eksctl create iamserviceaccount --name clients-api-iam-service-account \
         --namespace development \
         --cluster eks-acg \
-        --attach-policy-arn ${clients_iam_policy} --approve
+        --attach-policy-arn ${clients_iam_policy} --approve &
+
+    wait
 
 # Upgrading the applications
-    ( cd ./resource-api/infra/helm-v2 && ./create.sh )
-    ( cd ./clients-api/infra/helm-v2 && ./create.sh )
-    ( cd ./inventory-api/infra/helm-v2 && ./create.sh )
-    ( cd ./renting-api/infra/helm-v2 && ./create.sh )
+    ( cd ./resource-api/infra/helm-v2 && ./create.sh ) & \
+    ( cd ./clients-api/infra/helm-v2 && ./create.sh ) & \
+    ( cd ./inventory-api/infra/helm-v2 && ./create.sh ) & \
+    ( cd ./renting-api/infra/helm-v2 && ./create.sh ) &
+
+    wait
 
 
 # Updating IRSA for AWS Load Balancer Controller
