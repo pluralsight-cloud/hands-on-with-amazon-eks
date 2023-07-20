@@ -342,7 +342,45 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
 
 #     wait
 
+# # Automatic Deployment to Production Environment
 
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name inventory-api-codecommit-repo \
+#             --template-file cicd-5-deploy-prod.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=inventory-api ) & \
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name resource-api-codecommit-repo \
+#             --template-file cicd-5-deploy-prod.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=resource-api ) & \
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name renting-api-codecommit-repo \
+#             --template-file cicd-5-deploy-prod.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=renting-api ) & \
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name clients-api-codecommit-repo \
+#             --template-file cicd-5-deploy-prod.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=clients-api ) & \
+#     ( cd Infrastructure/cloudformation/cicd && \
+#         aws cloudformation deploy \
+#             --stack-name front-end-codecommit-repo \
+#             --template-file cicd-5-deploy-prod.yaml \
+#             --capabilities CAPABILITY_IAM \
+#             --parameter-overrides \
+#                 AppName=front-end ) &
+
+#     wait
 
 
 echo "*************************************************************"
