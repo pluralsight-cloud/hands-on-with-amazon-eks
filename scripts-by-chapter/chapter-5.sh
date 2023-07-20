@@ -247,25 +247,31 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
     wait
 
 Updating Development
-    ( cd ./resource-api/infra/helm-v5 && ./create.sh )
-    ( cd ./clients-api/infra/helm-v5 && ./create.sh )
-    ( cd ./inventory-api/infra/helm-v5 && ./create.sh )
-    ( cd ./renting-api/infra/helm-v5 && ./create.sh )
-    ( cd ./front-end/infra/helm-v5 && ./create.sh )
+    ( cd ./resource-api/infra/helm-v5 && ./create.sh ) & \
+    ( cd ./clients-api/infra/helm-v5 && ./create.sh ) & \
+    ( cd ./inventory-api/infra/helm-v5 && ./create.sh ) & \
+    ( cd ./renting-api/infra/helm-v5 && ./create.sh ) & \
+    ( cd ./front-end/infra/helm-v5 && ./create.sh ) &
+
+    wait
 
 
 #  Create the Production DynamoDB Tables
-    ( cd ./clients-api/infra/cloudformation && ./create-dynamodb-table.sh production )
-    ( cd ./inventory-api/infra/cloudformation && ./create-dynamodb-table.sh production )
-    ( cd ./renting-api/infra/cloudformation && ./create-dynamodb-table.sh production )
-    ( cd ./resource-api/infra/cloudformation && ./create-dynamodb-table.sh production )
+    ( cd ./clients-api/infra/cloudformation && ./create-dynamodb-table.sh production ) & \
+    ( cd ./inventory-api/infra/cloudformation && ./create-dynamodb-table.sh production ) & \
+    ( cd ./renting-api/infra/cloudformation && ./create-dynamodb-table.sh production ) & \
+    ( cd ./resource-api/infra/cloudformation && ./create-dynamodb-table.sh production ) &
+
+    wait
 
 
 # Create IAM Policies of Bookstore Microservices
-    ( cd clients-api/infra/cloudformation && ./create-iam-policy.sh production )
-    ( cd resource-api/infra/cloudformation && ./create-iam-policy.sh production )
-    ( cd inventory-api/infra/cloudformation && ./create-iam-policy.sh production )
-    ( cd renting-api/infra/cloudformation && ./create-iam-policy.sh production )
+    ( cd clients-api/infra/cloudformation && ./create-iam-policy.sh production ) & \
+    ( cd resource-api/infra/cloudformation && ./create-iam-policy.sh production ) & \
+    ( cd inventory-api/infra/cloudformation && ./create-iam-policy.sh production ) & \
+    ( cd renting-api/infra/cloudformation && ./create-iam-policy.sh production ) &
+
+    wait
 
 # # Create IAM Service Accounts
 #     resource_iam_policy=$(aws cloudformation describe-stacks --stack production-iam-policy-resource-api --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
