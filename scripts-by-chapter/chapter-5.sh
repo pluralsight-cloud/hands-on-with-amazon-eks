@@ -303,29 +303,47 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
 #     renting_iam_policy=$(aws cloudformation describe-stacks --stack production-iam-policy-renting-api --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
 #     inventory_iam_policy=$(aws cloudformation describe-stacks --stack production-iam-policy-inventory-api --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
 #     clients_iam_policy=$(aws cloudformation describe-stacks --stack production-iam-policy-clients-api --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
+    
+    
 #     eksctl create iamserviceaccount --name resources-api-iam-service-account \
 #         --namespace production \
 #         --cluster eks-acg \
-#         --attach-policy-arn ${resource_iam_policy} --approve
+#         --attach-policy-arn ${resource_iam_policy} --approve & \
 #     eksctl create iamserviceaccount --name renting-api-iam-service-account \
 #         --namespace production \
 #         --cluster eks-acg \
-#         --attach-policy-arn ${renting_iam_policy} --approve
+#         --attach-policy-arn ${renting_iam_policy} --approve & \
 #     eksctl create iamserviceaccount --name inventory-api-iam-service-account \
 #         --namespace production \
 #         --cluster eks-acg \
-#         --attach-policy-arn ${inventory_iam_policy} --approve
+#         --attach-policy-arn ${inventory_iam_policy} --approve & \
 #     eksctl create iamserviceaccount --name clients-api-iam-service-account \
 #         --namespace production \
 #         --cluster eks-acg \
-#         --attach-policy-arn ${clients_iam_policy} --approve
+#         --attach-policy-arn ${clients_iam_policy} --approve &
+
+#     wait
 
 # # Installing the Production applications
-#     ( cd ./resource-api/infra/helm-v3 && ./create.sh production )
-#     ( cd ./clients-api/infra/helm-v3 && ./create.sh production )
-#     ( cd ./inventory-api/infra/helm-v3 && ./create.sh production )
-#     ( cd ./renting-api/infra/helm-v3 && ./create.sh production )
-#     ( cd ./front-end/infra/helm-v3 && ./create.sh production )
+
+#     sleep 300 # wait until everything has images. More or less, 5 minutes
+
+#     front_end_image_tag=$(aws ecr list-images --repository-name bookstore.front-end --query "imageIds[0].imageTag" --output text | xargs)
+#     clients_api_image_tag=$(aws ecr list-images --repository-name bookstore.clients-api --query "imageIds[0].imageTag" --output text | xargs)
+#     renting_api_image_tag=$(aws ecr list-images --repository-name bookstore.renting-api --query "imageIds[0].imageTag" --output text | xargs)
+#     resource_api_image_tag=$(aws ecr list-images --repository-name bookstore.resource-api --query "imageIds[0].imageTag" --output text | xargs)
+#     inventory_api_image_tag=$(aws ecr list-images --repository-name bookstore.inventory-api --query "imageIds[0].imageTag" --output text | xargs)
+
+#     ( cd ./resource-api/infra/helm-v5 && ./create.sh production ${resource_api_image_tag} ) & \
+#     ( cd ./clients-api/infra/helm-v5 && ./create.sh production ${clients_api_image_tag} ) & \
+#     ( cd ./inventory-api/infra/helm-v5 && ./create.sh production ${inventory_api_image_tag} ) & \
+#     ( cd ./renting-api/infra/helm-v5 && ./create.sh production ${renting_api_image_tag} ) & \
+#     ( cd ./front-end/infra/helm-v5 && ./create.sh production ${front_end_image_tag} ) &
+
+#     wait
+
+
+
 
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 6 - FINISHED AT $(date) *********"
