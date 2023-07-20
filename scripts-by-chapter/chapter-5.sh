@@ -246,12 +246,37 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
 
     wait
 
-Updating Development
-    ( cd ./resource-api/infra/helm-v5 && ./create.sh ) & \
-    ( cd ./clients-api/infra/helm-v5 && ./create.sh ) & \
-    ( cd ./inventory-api/infra/helm-v5 && ./create.sh ) & \
-    ( cd ./renting-api/infra/helm-v5 && ./create.sh ) & \
-    ( cd ./front-end/infra/helm-v5 && ./create.sh ) &
+# Updating Development
+    ( cd ./inventory-api && \
+        sed -i 's/helm-v4/helm-v5/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V4 to Helm V5" && \
+        git push origin master
+    ) & \
+    ( cd ./resource-api && \
+        sed -i 's/helm-v4/helm-v5/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V4 to Helm V5" && \
+        git push origin master
+    ) & \
+    ( cd ./clients-api && \
+        sed -i 's/helm-v4/helm-v5/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V4 to Helm V5" && \
+        git push origin master
+    ) & \
+    ( cd ./renting-api && \
+        sed -i 's/helm-v4/helm-v5/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V4 to Helm V5" && \
+        git push origin master
+    ) & \
+    ( cd ./front-end && \
+        sed -i 's/helm-v4/helm-v5/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V4 to Helm V5" && \
+        git push origin master
+    ) &
 
     wait
 
