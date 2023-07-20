@@ -1,6 +1,5 @@
 # FROM node:carbon-alpine
-FROM public.ecr.aws/docker/library/node:16-alpine
-RUN apk --no-cache --virtual build-dependencies add python
+FROM public.ecr.aws/docker/library/node:14-alpine
 WORKDIR /opt/forms
 COPY package*.json ./
 RUN npm install
