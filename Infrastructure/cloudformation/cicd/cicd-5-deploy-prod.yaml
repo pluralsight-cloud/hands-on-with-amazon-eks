@@ -11,11 +11,11 @@ Parameters:
   DevelopDeploySpecLocation:
     Description: The location of the buildspec used to deploy to development file inside the repository
     Type: String
-    Default: infra/codebuild/deployment/development/buildspec.yml
+    Default: infra/codebuild/deployment/buildspec.yml
   ProdDeploySpecLocation:
     Description: The location of the buildspec used to deploy to production file inside the repository
     Type: String
-    Default: infra/codebuild/deployment/prod/buildspec.yml
+    Default: infra/codebuild/deployment/buildspec.yml
   CICDBranch:
     Description: The branch that will be used for the CICD process
     Type: String
@@ -93,6 +93,10 @@ Resources:
               - codebuild:BatchPutTestCases
             Resource:
               - !Sub 'arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:report-group/bookstore-${AppName}-*'
+          - Effect: Allow
+            Action:
+              - route53:ListHostedZones
+            Resource: '*'
       PolicyName: !Sub 'code-build-policy-${AppName}'
       Roles:
         - !Ref 'IamServiceRole'
@@ -132,7 +136,15 @@ Resources:
         Type: LINUX_CONTAINER
         Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
         ComputeType: BUILD_GENERAL1_SMALL
-        EnvironmentVariables: []
+        EnvironmentVariables: 
+          - Name: ECR_URL
+            Value: !GetAtt EcrRepository.RepositoryUri
+          - Name: NAMESPACE
+            Value: development
+          - Name: AWS_REGION
+            Value: !Ref AWS::Region
+          - Name: HELM_RELEASE_NAME
+            Value: !Sub "${AppName}-development"
         PrivilegedMode: true
         ImagePullCredentialsType: CODEBUILD
       Name: !Sub 'development-deploy-bookstore-${AppName}'
@@ -155,7 +167,15 @@ Resources:
         Type: LINUX_CONTAINER
         Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
         ComputeType: BUILD_GENERAL1_SMALL
-        EnvironmentVariables: []
+        EnvironmentVariables: 
+          - Name: ECR_URL
+            Value: !GetAtt EcrRepository.RepositoryUri
+          - Name: NAMESPACE
+            Value: production
+          - Name: AWS_REGION
+            Value: !Ref AWS::Region
+          - Name: HELM_RELEASE_NAME
+            Value: !Sub "${AppName}-production"
         PrivilegedMode: true
         ImagePullCredentialsType: CODEBUILD
       Name: !Sub 'prod-deploy-bookstore-${AppName}'
