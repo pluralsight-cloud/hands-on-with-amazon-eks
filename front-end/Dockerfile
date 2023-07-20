@@ -1,5 +1,5 @@
 # FROM node:carbon-alpine
-FROM public.ecr.aws/docker/library/node:14-alpine
+FROM public.ecr.aws/docker/library/node:10-alpine
 WORKDIR /opt/forms
 COPY package*.json ./
 RUN npm install
