@@ -32,6 +32,13 @@ echo "***************************************************"
     wait
 
 
+# Enable X-Ray
+
+    appmesh_controller_iam_role_name=$(eksctl get iamserviceaccount --cluster eks-acg | grep appmesh-controller | awk '{print $3}' | xargs | cut -d "/" -f 2)
+    aws iam attach-role-policy --role-name ${appmesh_controller_iam_role_name} --policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+
+    ( cd ./Infrastructure/service-mesh && ./x-ray-setup.sh )
+
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 7 - FINISHED AT $(date) *********"
 echo "*************************************************************"
