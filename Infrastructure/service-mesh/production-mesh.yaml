@@ -1,7 +1,7 @@
 apiVersion: appmesh.k8s.aws/v1beta2
 kind: Mesh
 metadata:
-  name: prod-mesh
+  name: production-mesh
 spec:
   egressFilter:
     type: ALLOW_ALL
