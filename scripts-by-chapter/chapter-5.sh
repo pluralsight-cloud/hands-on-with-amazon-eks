@@ -308,21 +308,19 @@ export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output t
     eksctl create iamserviceaccount --name resources-api-iam-service-account \
         --namespace production \
         --cluster eks-acg \
-        --attach-policy-arn ${resource_iam_policy} --approve & \
+        --attach-policy-arn ${resource_iam_policy} --approve
     eksctl create iamserviceaccount --name renting-api-iam-service-account \
         --namespace production \
         --cluster eks-acg \
-        --attach-policy-arn ${renting_iam_policy} --approve & \
+        --attach-policy-arn ${renting_iam_policy} --approve
     eksctl create iamserviceaccount --name inventory-api-iam-service-account \
         --namespace production \
         --cluster eks-acg \
-        --attach-policy-arn ${inventory_iam_policy} --approve & \
+        --attach-policy-arn ${inventory_iam_policy} --approve
     eksctl create iamserviceaccount --name clients-api-iam-service-account \
         --namespace production \
         --cluster eks-acg \
-        --attach-policy-arn ${clients_iam_policy} --approve &
-
-    wait
+        --attach-policy-arn ${clients_iam_policy} --approve 
 
 # Installing the Production applications
 
