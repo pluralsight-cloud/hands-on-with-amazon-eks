@@ -23,7 +23,7 @@ echo "***************************************************"
     ( cd ./renting-api/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &\
     ( cd ./front-end/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &
 
-    front_end_iam_policy=$(aws cloudformation describe-stacks --stack development-iam-policy-clients-api --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
+    front_end_iam_policy=$(aws cloudformation describe-stacks --stack development-iam-policy-front-end --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
 
     eksctl create iamserviceaccount --name front-end-iam-service-account \
         --namespace development \
