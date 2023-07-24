@@ -51,6 +51,41 @@ echo "***************************************************"
 
     # kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
+# Updating deployment script to use Helm V& charts
+    ( cd ./inventory-api && \
+        sed -i 's/helm-v5/helm-v6/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V5 to Helm V6" && \
+        git push origin master
+    ) & \
+    ( cd ./resource-api && \
+        sed -i 's/helm-v5/helm-v6/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V5 to Helm V6" && \
+        git push origin master
+    ) & \
+    ( cd ./clients-api && \
+        sed -i 's/helm-v5/helm-v6/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V5 to Helm V6" && \
+        git push origin master
+    ) & \
+    ( cd ./renting-api && \
+        sed -i 's/helm-v5/helm-v6/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V5 to Helm V6" && \
+        git push origin master
+    ) & \
+    ( cd ./front-end && \
+        sed -i 's/helm-v5/helm-v6/' infra/codebuild/deployment/buildspec.yml && \
+        git add . && \
+        git commit -m "From Helm V5 to Helm V6" && \
+        git push origin master
+    ) &
+
+    wait
+
+
 # Enable X-Ray
 
     # appmesh_controller_iam_role_name=$(eksctl get iamserviceaccount --cluster eks-acg | grep appmesh-controller | awk '{print $3}' | xargs | cut -d "/" -f 2)
@@ -64,9 +99,10 @@ echo "***************************************************"
 
     wait
 
+    ( cd ./Infrastructure/service-mesh && ./x-ray-setup.sh )
+    
     kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
-    ( cd ./Infrastructure/service-mesh && ./x-ray-setup.sh )
 
     
 
