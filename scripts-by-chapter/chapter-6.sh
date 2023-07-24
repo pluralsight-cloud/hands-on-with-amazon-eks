@@ -46,14 +46,22 @@ echo "***************************************************"
 
     wait
 
+    kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
+
 # Enable X-Ray
 
-    appmesh_controller_iam_role_name=$(eksctl get iamserviceaccount --cluster eks-acg | grep appmesh-controller | awk '{print $3}' | xargs | cut -d "/" -f 2)
-    aws iam attach-role-policy --role-name ${appmesh_controller_iam_role_name} --policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+    # appmesh_controller_iam_role_name=$(eksctl get iamserviceaccount --cluster eks-acg | grep appmesh-controller | awk '{print $3}' | xargs | cut -d "/" -f 2)
+    # aws iam attach-role-policy --role-name ${appmesh_controller_iam_role_name} --policy-arn arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
+
+    ( cd ./resource-api/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &\
+    ( cd ./clients-api/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &\
+    ( cd ./inventory-api/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &\
+    ( cd ./renting-api/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &\
+    ( cd ./front-end/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &
 
     ( cd ./Infrastructure/service-mesh && ./x-ray-setup.sh )
 
-    kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
+    
 
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 7 - FINISHED AT $(date) *********"
