@@ -59,6 +59,8 @@ echo "***************************************************"
     ( cd ./renting-api/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &\
     ( cd ./front-end/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &
 
+    wait
+
     ( cd ./Infrastructure/service-mesh && ./x-ray-setup.sh )
 
     
