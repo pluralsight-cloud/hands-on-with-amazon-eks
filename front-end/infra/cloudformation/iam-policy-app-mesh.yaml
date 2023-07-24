@@ -1,0 +1,20 @@
+Description: Front End IAM Policy
+Parameters:
+  Namespace:
+    Description: The namespace which this table belongs to
+    Type: String
+    Default: development
+Resources:
+  IamPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action: appmesh:StreamAggregatedResources
+          Resource: "*"
+      ManagedPolicyName: !Sub "${Namespace}-FrontEndPolicy"
+Outputs:
+  IamPolicyArn:
+    Value: !Ref IamPolicy

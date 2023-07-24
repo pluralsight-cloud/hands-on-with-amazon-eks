@@ -15,6 +15,21 @@ echo "***************************************************"
     kubectl label namespace development mesh=development-mesh
     kubectl label namespace development "appmesh.k8s.aws/sidecarInjectorWebhook"=enabled
 
+# Updating IAM resources - Specially for FrontEnd - Required to make the envoy container to work
+
+    ( cd ./resource-api/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &\
+    ( cd ./clients-api/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &\
+    ( cd ./inventory-api/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &\
+    ( cd ./renting-api/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &\
+    ( cd ./front-end/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &
+
+    front_end_iam_policy=$(aws cloudformation describe-stacks --stack development-iam-policy-clients-api --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
+
+    eksctl create iamserviceaccount --name front-end-iam-service-account \
+        --namespace development \
+        --cluster eks-acg \
+        --attach-policy-arn ${front_end_iam_policy} --approve
+
 # Install Helm Charts with Mesh Components
 
     front_end_image_tag=$(aws ecr list-images --repository-name bookstore.front-end --query "imageIds[0].imageTag" --output text | xargs)
@@ -31,6 +46,7 @@ echo "***************************************************"
 
     wait
 
+    kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
 # Enable X-Ray
 
