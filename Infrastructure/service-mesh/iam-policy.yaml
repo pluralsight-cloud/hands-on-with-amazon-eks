@@ -1,19 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: The IAM Resources for External DNS
-Parameters:
-  DeployRole:
-    Description: Decide whether deploy or not the IAM Role
-    Type: String
-    Default: 'no'
-    AllowedValues:
-      - 'yes'
-      - 'no'
-Conditions:
-  CreateIamRole: !Equals
-    - !Ref 'DeployRole'
-    - 'yes'
+Description: The IAM Resources for AppMesh
 Resources:
-  ExternalDnsIamPolicy:
+  IamPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       PolicyDocument:
