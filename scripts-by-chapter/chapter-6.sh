@@ -5,6 +5,7 @@ echo "***************************************************"
 # Install the AppMesh Controller
 
     ( cd ./Infrastructure/service-mesh && ./configure-app-mesh.sh )
+    sleep 60
 
 # Create the Development and Production App Meshes
 
@@ -22,6 +23,8 @@ echo "***************************************************"
     ( cd ./inventory-api/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &\
     ( cd ./renting-api/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &\
     ( cd ./front-end/infra/cloudformation && ./create-iam-policy-app-mesh.sh ) &
+
+    wait
 
     front_end_iam_policy=$(aws cloudformation describe-stacks --stack development-iam-policy-front-end --query "Stacks[0].Outputs[0]" | jq .OutputValue | tr -d '"')
 
@@ -46,7 +49,7 @@ echo "***************************************************"
 
     wait
 
-    kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
+    # kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
 # Enable X-Ray
 
@@ -60,6 +63,8 @@ echo "***************************************************"
     ( cd ./front-end/infra/cloudformation && ./create-iam-policy-x-ray.sh ) &
 
     wait
+
+    kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
     ( cd ./Infrastructure/service-mesh && ./x-ray-setup.sh )
 

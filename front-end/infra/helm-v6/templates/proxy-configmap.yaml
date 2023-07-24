@@ -10,6 +10,7 @@ data:
         server_name  _;
         
         location / {
+            proxy_http_version 1.1;
             add_header 'Access-Control-Allow-Origin' '*';
             add_header 'Access-Control-Allow-Credentials' 'true';
             add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
@@ -18,6 +19,7 @@ data:
             proxy_pass http://front-end-service/;
         }
         location /resources-api/ {
+            proxy_http_version 1.1;
             add_header 'Access-Control-Allow-Origin' '*';
             add_header 'Access-Control-Allow-Credentials' 'true';
             add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
@@ -26,6 +28,7 @@ data:
             proxy_pass http://resource-api-service/;
         }
         location /inventory-api/ {
+            proxy_http_version 1.1;
             add_header 'Access-Control-Allow-Origin' '*';
             add_header 'Access-Control-Allow-Credentials' 'true';
             add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, PUT, DELETE';
@@ -34,6 +37,7 @@ data:
             proxy_pass http://inventory-api-service/;
         }
         location /renting-api/ {
+            proxy_http_version 1.1;
             if ($request_method = 'OPTIONS') {
                 add_header 'Access-Control-Allow-Origin' '*';
                 add_header 'Access-Control-Allow-Credentials' 'true';
@@ -67,6 +71,7 @@ data:
             proxy_pass http://renting-api-service/;
         }
         location /clients-api/ {
+            proxy_http_version 1.1;
             if ($request_method = 'OPTIONS') {
                 add_header 'Access-Control-Allow-Origin' '*';
                 add_header 'Access-Control-Allow-Credentials' 'true';
