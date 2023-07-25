@@ -21,7 +21,7 @@ spec:
 apiVersion: appmesh.k8s.aws/v1beta2
 kind: VirtualService
 metadata:
-  name: {{ .Values.service.name }}
+  name: {{ .Values.service.name }}-proxy
   namespace: {{ .Release.Namespace }}
 spec:
   awsName: {{ .Values.service.name }}.{{ .Release.Namespace }}.svc.cluster.local
