@@ -104,6 +104,9 @@ echo "***************************************************"
     kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
 
+# Retry Policies
+
+    # kubectl scale deploy -n development resource-api-development-acg-resource-api --replicas=0
     
 
 echo "*************************************************************"
