@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ template "acg-inventory-api.name" . }}
+    chart: {{ template "acg-inventory-api.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "acg-inventory-api.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "acg-inventory-api.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: inventory-api-iam-service-account
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.aws.accountId }}.dkr.ecr.{{ .Values.aws.region }}.amazonaws.com/{{ .Values.image.repository.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
+              protocol: TCP
+          env:
+            - name: DYNAMODB_TABLE 
+              value: {{ .Release.Namespace }}-inventory
+            - name: RESOURCE_API_ENDPOINT
+              value: http://resource-api-service
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.aws.region }}
+            - name: AWS_REGION
+              value: {{ .Values.aws.region}}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
