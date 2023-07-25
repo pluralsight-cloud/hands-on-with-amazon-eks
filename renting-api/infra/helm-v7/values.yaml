@@ -1,0 +1,37 @@
+# Default values for acg-renting-api.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+baseDomain: sample.com
+
+image:
+  repository: 
+    name: bookstore.renting-api
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  containerPort: 5004
+  servicePort: 80
+  name: renting-api-service
+  scheme: internet-facing
+
+aws:
+  region: us-east-1
+  accountId: 12345678909
+
+resources: {}
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
