@@ -19,7 +19,7 @@ spec:
   backends:
     - virtualService:
         virtualServiceRef:
-          Name: resource-api-service
+          name: resource-api-service
 
 ---
 apiVersion: appmesh.k8s.aws/v1beta2
