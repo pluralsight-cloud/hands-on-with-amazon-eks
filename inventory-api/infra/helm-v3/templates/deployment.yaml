@@ -36,6 +36,8 @@ spec:
               value: http://resource-api-service
             - name: AWS_DEFAULT_REGION
               value: {{ .Values.aws.region}}
+            - name: AWS_REGION
+              value: {{ .Values.aws.region}}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
