@@ -8,7 +8,7 @@ fi
 
 aws cloudformation deploy \
     --stack-name ${namespace}-iam-policy-inventory-api \
-    --template-file iam-policy-x-ray.yaml \
+    --template-file iam-policy-app-x-ray.yaml \
     --capabilities CAPABILITY_NAMED_IAM \
     --parameter-overrides \
         Namespace=${namespace}
