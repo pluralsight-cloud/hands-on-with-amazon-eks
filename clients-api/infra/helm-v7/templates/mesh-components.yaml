@@ -54,8 +54,8 @@ spec:
         retryPolicy:
           maxRetries: 10
           perRetryTimeout:
-            unit: s
-            value: 2
+            unit: ms
+            value: 2000
           httpRetryEvents:
             - server-error
             - gateway-error
