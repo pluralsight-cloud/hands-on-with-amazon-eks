@@ -63,6 +63,7 @@ spec:
           httpRetryEvents:
             - server-error
             - gateway-error
+            - stream-error
           tcpRetryEvents:
             - connection-error
         timeout:
