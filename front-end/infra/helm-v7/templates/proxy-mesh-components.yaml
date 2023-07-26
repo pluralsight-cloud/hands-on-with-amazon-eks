@@ -11,7 +11,7 @@ spec:
       release: {{ .Release.Name }}
   listeners:
     - portMapping:
-        port: {{ .Values.service.servicePort }}
+        port: {{ .Values.service.containerPort }}
         protocol: http
   serviceDiscovery:
     dns:
@@ -58,7 +58,7 @@ metadata:
 spec:
   listeners:
     - portMapping:
-        port: {{ .Values.service.servicePort }}
+        port: {{ .Values.service.containerPort }}
         protocol: http
   routes:
     - name: {{ template "acg-front-end.name" . }}-proxy-route

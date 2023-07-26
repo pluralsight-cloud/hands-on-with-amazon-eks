@@ -11,7 +11,7 @@ spec:
       release: {{ .Release.Name }}
   listeners:
     - portMapping:
-        port: {{ .Values.service.servicePort }}
+        port: {{ .Values.service.containerPort }}
         protocol: http
   logging:
     accessLog:
@@ -43,7 +43,7 @@ metadata:
 spec:
   listeners:
     - portMapping:
-        port: {{ .Values.service.servicePort }}
+        port: {{ .Values.service.containerPort }}
         protocol: http
   routes:
     - name: {{ template "acg-resource-api.name" . }}-route
