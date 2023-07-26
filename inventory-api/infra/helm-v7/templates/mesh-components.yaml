@@ -16,6 +16,10 @@ spec:
   serviceDiscovery:
     dns:
       hostname: {{ .Values.service.name }}
+  logging:
+    accessLog:
+      file:
+        path: "/dev/stdout"
   backends:
     - virtualService:
         virtualServiceRef:

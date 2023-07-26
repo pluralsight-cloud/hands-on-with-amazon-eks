@@ -13,6 +13,10 @@ spec:
     - portMapping:
         port: {{ .Values.service.containerPort }}
         protocol: http
+  logging:
+    accessLog:
+      file:
+        path: "/dev/stdout"
   serviceDiscovery:
     dns:
       hostname: {{ .Values.service.name }}
