@@ -17,8 +17,6 @@ spec:
     accessLog:
       file:
         path: "/tmp/stdout"
-        # format:
-        #   text: string
   serviceDiscovery:
     dns:
       hostname: {{ .Values.service.name }}
@@ -67,3 +65,7 @@ spec:
             - gateway-error
           tcpRetryEvents:
             - connection-error
+        timeout:
+          perRequest:
+            value: 30
+            unit: s
