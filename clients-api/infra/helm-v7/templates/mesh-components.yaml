@@ -16,7 +16,7 @@ spec:
   logging:
     accessLog:
       file:
-        path: "/dev/stdout"
+        path: "/tmp/stdout"
         format:
           text: string
   serviceDiscovery:
