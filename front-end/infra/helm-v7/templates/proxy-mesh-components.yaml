@@ -20,6 +20,8 @@ spec:
     accessLog:
       file:
         path: "/dev/stdout"
+        format:
+          text: string
   backends:
     - virtualService:
         virtualServiceRef:

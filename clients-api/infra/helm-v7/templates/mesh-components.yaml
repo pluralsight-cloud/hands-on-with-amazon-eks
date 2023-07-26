@@ -17,6 +17,8 @@ spec:
     accessLog:
       file:
         path: "/dev/stdout"
+        format:
+          text: string
   serviceDiscovery:
     dns:
       hostname: {{ .Values.service.name }}
