@@ -24,7 +24,7 @@ metadata:
   name: {{ .Values.service.name }}-proxy
   namespace: {{ .Release.Namespace }}
 spec:
-  awsName: {{ .Values.service.name }}.{{ .Release.Namespace }}
+  awsName: {{ .Values.service.name }}
   provider:
     virtualRouter:
       virtualRouterRef:

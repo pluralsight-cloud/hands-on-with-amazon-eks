@@ -28,7 +28,7 @@ metadata:
   name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  awsName: {{ .Values.service.name }}.{{ .Release.Namespace }}
+  awsName: {{ .Values.service.name }}
   provider:
     virtualRouter:
       virtualRouterRef:
