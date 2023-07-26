@@ -10,7 +10,6 @@ echo "***************************************************"
 # Create the Development and Production App Meshes
 
     ( cd ./Infrastructure/service-mesh && kubectl apply -f development-mesh.yaml )
-    ( cd ./Infrastructure/service-mesh && kubectl apply -f production-mesh.yaml )
 
 # Enable Namespace
     kubectl label namespace development mesh=development-mesh
