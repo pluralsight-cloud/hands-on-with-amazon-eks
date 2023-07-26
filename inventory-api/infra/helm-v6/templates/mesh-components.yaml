@@ -15,7 +15,7 @@ spec:
         protocol: http
   serviceDiscovery:
     dns:
-      hostname: {{ .Values.service.name }}.{{ .Release.Namespace }}.svc.cluster.local
+      hostname: {{ .Values.service.name }}.{{ .Release.Namespace }}
 
 ---
 apiVersion: appmesh.k8s.aws/v1beta2
@@ -24,7 +24,7 @@ metadata:
   name: {{ .Values.service.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  awsName: {{ .Values.service.name }}.{{ .Release.Namespace }}.svc.cluster.local
+  awsName: {{ .Values.service.name }}.{{ .Release.Namespace }}
   provider:
     virtualRouter:
       virtualRouterRef:
