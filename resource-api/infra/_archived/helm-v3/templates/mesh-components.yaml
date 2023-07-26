@@ -15,7 +15,7 @@ spec:
         protocol: http
   serviceDiscovery:
     dns:
-      hostname: {{ .Values.service.name }}.{{ .Release.Namespace }}
+      hostname: {{ .Values.service.name }}
 
 ---
 apiVersion: appmesh.k8s.aws/v1beta2

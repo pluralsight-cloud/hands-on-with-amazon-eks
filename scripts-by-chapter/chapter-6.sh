@@ -100,7 +100,7 @@ echo "***************************************************"
 
     ( cd ./Infrastructure/service-mesh && ./x-ray-setup.sh )
     
-    kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
+    # kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
 
 # Retry Policies
@@ -121,6 +121,7 @@ echo "***************************************************"
 
     wait
 
+    kubectl delete pods -n development $(kubectl get pods -n development | grep Running | awk '{print $1}')
 
 echo "*************************************************************"
 echo "********* READY FOR CHAPTER 7 - FINISHED AT $(date) *********"
