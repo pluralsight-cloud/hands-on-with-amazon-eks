@@ -1,4 +1,4 @@
-# A Practical Guide to EKS
+# Hands-on with Amazon EKS!
 
 In this repository you will find all the assets required for the course `Hands On With Amazon EKS`, by A Cloud Guru, a Pluralsight Company.
 
