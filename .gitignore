@@ -1,1 +1,4 @@
 /test.yaml
+
+# ignore Intellij IDEA configuration
+.idea
